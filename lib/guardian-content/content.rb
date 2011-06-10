@@ -1,7 +1,7 @@
 # This class represents 'content' items that have appeared on guardian.co.uk.  Content items
 # are usually articles, but can also be image galleries, videos, and so on.
 # ==== Attributes
-# * +id+ - The Guardian ID of the content item, which is the same as the 'path' part of its URL, eg +world/2010/may/17/iran-nuclear-uranium-swap-turkey+ 
+# * +id+ - The Guardian ID of the content item, which is the same as the 'path' part of its URL, eg +world/2010/may/17/iran-nuclear-uranium-swap-turkey+
 # * +title+ - The content item's title, as used on its web page.
 # * +url+ - The full URL of the content item.
 # * +publication_date+ - The date and time on which the content item was published. Returned as a DateTime instance.
@@ -17,18 +17,21 @@ class GuardianContent::Content < GuardianContent::Base
     @title = attributes[:webTitle]
     @url = attributes[:webUrl]
     @section_id = attributes[:sectionId]
-    @publication_date = DateTime.parse(attributes[:webPublicationDate]) if attributes && attributes[:webPublicationDate]
+    @publication_date = attributes[:webPublicationDate]
+    if @publication_date && !@publication_date.respond_to?(:yday)
+      @publication_date = DateTime.parse(@publication_date)
+    end
     @body = attributes[:body]
-    
+
     if attributes[:tags]
       @tags = []
       attributes[:tags].each do |tag|
         @tags << tag
       end
     end
-    
+
     @fields = attributes[:fields].nested_symbolize_keys! if attributes[:fields]
-    
+
     if attributes[:fields]
       @headline = attributes[:fields][:headline]
     end
@@ -37,7 +40,7 @@ class GuardianContent::Content < GuardianContent::Base
   def inspect
     "#<Article id: \"" + self.id.to_s + "\" title: \"" + self.title.to_s + "\" + url: \"" + self.url.to_s + "\">"
   end
-  
+
   # Returns the Section in which the content item was published.
   def section
     return GuardianContent::Section.find_by_id(self.section_id)
@@ -52,7 +55,7 @@ class GuardianContent::Content < GuardianContent::Base
   #   * GuardianContent::Content.search("election")
   #   * GuardianContent::Content.search("election", :conditions => {:section => "politics"})
   def self.search(q, options = {})
-    
+
     query = {}
     query["page-size"] = options[:limit] if options[:limit]
     query["order-by"] = options[:order] if options[:order]
@@ -68,7 +71,7 @@ class GuardianContent::Content < GuardianContent::Base
 
     if options[:conditions]
       conditions = options[:conditions]
-      
+
       query[:tag] = conditions[:tag] if conditions[:tag]
       query[:section] = conditions[:section] if conditions[:section]
 
@@ -77,41 +80,48 @@ class GuardianContent::Content < GuardianContent::Base
 
     end
 
-    
+
     query[:format] = "json"
-      
+
     query[:q] = q
-    
+
     opts = {:query => query}
 
     response = self.get("/search", opts).nested_symbolize_keys![:response]
-    
-    results = recursively_symbolize_keys!(response[:results])
-    content = []
-
-    results.each do |result|
-      content << GuardianContent::Content.new(recursively_symbolize_keys!(result))
-    end
-    return content
+    return collate_results_from_response(response)
   end
 
-  # Fetch a Content item using its id. IDs are usually in the form of <tt>section/YYYY/month/DD/name-of-article</tt>. 
+  def self.find_all_by_id(id, options = {})
+    response = response_for_id_find(id, options)
+    return collate_results_from_response(response)
+  end
+
+  # Fetch a Content item using its id. IDs are usually in the form of <tt>section/YYYY/month/DD/name-of-article</tt>.
   def self.find_by_id(id, options = {})
-    
-    query = {}
+    response = response_for_id_find(id, options)
+    content = response[:content]
+
+    return GuardianContent::Content.new(recursively_symbolize_keys!(content))
+
+  end
+
+  private
+
+  def self.collate_results_from_response(response)
+    results = recursively_symbolize_keys!(response[:results])
+    return results.map do |result|
+      GuardianContent::Content.new(recursively_symbolize_keys!(result))
+    end
+  end
+
+  def self.response_for_id_find(id, options)
+    query = options
     query["show-fields"] = "all"
     query["show-tags"] = "all"
     query[:format] = "json"
     opts = {:query => query}
-        
-    attributes = {}
-    
-    response = recursively_symbolize_keys!self.get("/#{id}", opts).nested_symbolize_keys![:response]
-    
-    content = response[:content]
 
-    return GuardianContent::Content.new(recursively_symbolize_keys!(content))
-    
-  end  
-  
+    attributes = {}
+    return recursively_symbolize_keys!self.get("/#{id}", opts).nested_symbolize_keys![:response]
+  end
 end
