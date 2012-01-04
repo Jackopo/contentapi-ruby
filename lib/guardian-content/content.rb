@@ -80,6 +80,7 @@ class GuardianContent::Content < GuardianContent::Base
 
     end
 
+    query[:reference] = options[:reference] if options[:reference]
 
     query[:format] = "json"
 
