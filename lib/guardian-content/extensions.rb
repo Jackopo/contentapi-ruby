@@ -1,12 +1,15 @@
 class Hash
   # File merb/core_ext/hash.rb, line 166
   def nested_symbolize_keys!
+    
+    items = {}
+    
     each do |k,v|
       sym = k.respond_to?(:to_sym) ? k.to_sym : k
-      self[sym] = Hash === v ? v.nested_symbolize_keys! : v
+      items[sym] = Hash === v ? v.nested_symbolize_keys! : v
       delete(k) unless k == sym
     end
-    self
+    items
   end
 
   def nested_stringify_keys!
