@@ -17,6 +17,23 @@ class TestGuardianContent < Test::Unit::TestCase
       assert_equal "http://www.guardian.co.uk/world/thailand", keyword.url
     sleep 1
     end
+    
+    should "get not throw error for no match" do
+      
+      assert_nothing_raised {
+        content = GuardianContent::Content.find_all_by_id("world/fake")
+      }
+      
+    sleep 1
+    end  
+    
+    should "get empty array for no match" do
+      
+      content = GuardianContent::Content.find_all_by_id("world/fake")
+      assert_equal 0, content.length
+      
+    sleep 1
+    end  
 
     should "get a contributor" do
       contributor = GuardianContent::Contributor.find_by_id("profile/charliebrooker")

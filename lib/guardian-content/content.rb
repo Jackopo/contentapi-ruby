@@ -110,9 +110,16 @@ class GuardianContent::Content < GuardianContent::Base
 
   def self.collate_results_from_response(response)
     results = recursively_symbolize_keys!(response[:results])
-    return results.map do |result|
-      GuardianContent::Content.new(recursively_symbolize_keys!(result))
+    
+    #handle no results
+    if !results.nil? then
+      return results.map do |result|
+        GuardianContent::Content.new(recursively_symbolize_keys!(result))
+      end
+    else
+      return []
     end
+    
   end
 
   def self.response_for_id_find(id, options)
