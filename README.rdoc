@@ -1,5 +1,7 @@
 = guardian-content
 
+{<img src="https://travis-ci.org/rob-murray/contentapi-ruby.png?branch=master" alt="Build Status" />}[https://travis-ci.org/rob-murray/contentapi-ruby]
+
 This gem allows you to interface with the Guardian-Content-API[http://www.guardian.co.uk/open-platform] via Ruby.
 
 == Installation
