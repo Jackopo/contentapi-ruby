@@ -1,6 +1,6 @@
 = guardian-content
 
-{<img src="https://travis-ci.org/rob-murray/contentapi-ruby.png?branch=master" alt="Build Status" />}[https://travis-ci.org/rob-murray/contentapi-ruby]
+{<img src="https://travis-ci.org/rob-murray/contentapi-ruby.png?branch=master" alt="Build Status" />}[https://travis-ci.org/rob-murray/contentapi-ruby] {<img src="https://codeclimate.com/github/rob-murray/contentapi-ruby.png" />}[https://codeclimate.com/github/rob-murray/contentapi-ruby] {<img src="https://coveralls.io/repos/rob-murray/contentapi-ruby/badge.png" alt="Coverage Status" />}[https://coveralls.io/r/rob-murray/contentapi-ruby] {<img src="https://gemnasium.com/rob-murray/contentapi-ruby.png" alt="Dependency Status" />}[https://gemnasium.com/rob-murray/contentapi-ruby]
 
 This gem allows you to interface with the Guardian-Content-API[http://www.guardian.co.uk/open-platform] via Ruby.
 
