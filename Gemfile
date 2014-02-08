@@ -1,5 +1,4 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem 'rake'
-
+# Specify your gem's dependencies in yahoo-weather.gemspec
 gemspec
