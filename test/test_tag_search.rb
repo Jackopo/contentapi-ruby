@@ -1,4 +1,6 @@
-require 'helper'
+require 'test_helper'
+require 'test/unit'
+require 'guardian-content'
 
 class TestTagSearch < Test::Unit::TestCase
 

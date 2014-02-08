@@ -1,4 +1,6 @@
-require 'helper'
+require 'test_helper'
+require 'test/unit'
+require 'guardian-content'
 
 class TestGuardianContent < Test::Unit::TestCase
 
@@ -44,6 +46,8 @@ class TestGuardianContent < Test::Unit::TestCase
 
   should "get an article's associated section" do
     article = GuardianContent::Content.find_by_id("world/2010/may/12/thailand-red-shirt-protesters-siege")
+
+    puts article.inspect
 
     assert_equal "world", article.section_id
 #    assert_equal "A", article.section.title
