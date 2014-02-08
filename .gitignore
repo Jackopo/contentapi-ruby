@@ -18,10 +18,17 @@ coverage
 rdoc
 pkg
 .yardoc
-doc
+_yardoc
+doc/
+lib/bundler/man
 
 ## PROJECT::SPECIFIC
 .bundle
 *.gem
 Gemfile.lock
 .bundle
+.config
+spec/reports
+test/tmp
+test/version_tmp
+tmp
