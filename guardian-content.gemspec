@@ -6,11 +6,11 @@ require 'guardian-content/version'
 Gem::Specification.new do |spec|
   spec.name          = "guardian-content"
   spec.version       = GuardianContent::VERSION
-  spec.authors       = ["Rob Murray"]
-  spec.email         = ["robmurray17@gmail.com"]
+  spec.authors       = ["Jacopo Ghisolfi"]
+  spec.email         = ["jacopo.ghisolfi@gmail.com"]
   spec.summary       = %q{Queries the Guardian Content API}
   spec.description   = %q{A library for the Guardian Content API.}
-  spec.homepage      = "https://github.com/rob-murray/contentapi-ruby"
+  spec.homepage      = "https://github.com/Jackopo/contentapi-ruby"
   spec.license       = "Apache 2.0"
 
   spec.files         = `git ls-files -z`.split("\x0")

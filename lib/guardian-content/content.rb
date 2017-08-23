@@ -59,6 +59,7 @@ class GuardianContent::Content < GuardianContent::Base
     query = {}
     query["page-size"] = options[:limit] if options[:limit]
     query["order-by"] = options[:order] if options[:order]
+    query["page"] = options[:page] if options[:page]
 
     if options[:select]
       if options[:select][:tags]
@@ -110,7 +111,7 @@ class GuardianContent::Content < GuardianContent::Base
 
   def self.collate_results_from_response(response)
     results = recursively_symbolize_keys!(response[:results])
-    
+
     #handle no results
     if !results.nil? then
       return results.map do |result|
@@ -119,7 +120,7 @@ class GuardianContent::Content < GuardianContent::Base
     else
       return []
     end
-    
+
   end
 
   def self.response_for_id_find(id, options)
